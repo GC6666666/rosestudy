@@ -1,0 +1,4 @@
+# internal/conf的作用
+
+- 这里定义了Conf结构体，用来对应yaml配置文件Unmarshal之后的结构，也就是Unmarshal方法返回的out对象
+- Conf有一个Server属性，Sever并不是在Conf中直接定义的，而是采用一种嵌套的方式引用了chttp包下的Config结构体
