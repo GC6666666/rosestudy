@@ -358,3 +358,87 @@ engine.Use(gin.Recovery())
 
 4. **继承属性：**
    子 `RouterGroup` 会继承父 `RouterGroup` 的中间件和路径前缀，同时也可以添加自己的中间件或覆盖继承来的中间件。
+
+# 4.扩展知识- Start 和 ShutDown 方法的 API 解析
+
+## 4.1 `net.Listen`
+
+`net.Listen` 是 Go 语言标准库中 `net` 包的一个函数，用于在指定的网络地址上监听来自客户端的连接请求。这是网络编程中一个基础且关键的功能，允许服务器端应用程序开始接收客户端发起的连接。
+
+**函数签名：**
+```go
+func Listen(network, address string) (Listener, error)
+```
+
+- `network`: 指定网络类型，常用的类型有 "tcp", "tcp4" (只用IPv4), "tcp6" (只用IPv6), "unix" (UNIX域套接字), "unixpacket" 等。
+- `address`: 指定监听地址。对于 TCP/UDP 网络，这通常是 IP 地址和端口号（例如 "192.168.1.1:8080" 或 ":8080" 表示监听所有接口的 8080 端口）。
+
+**用法示例：**
+```go
+listener, err := net.Listen("tcp", ":8080")
+if err != nil {
+    log.Fatalf("Failed to listen: %v", err)
+}
+defer listener.Close()
+```
+
+## 4.2 `http.Server`
+
+`http.Server` 结构体定义了一个 HTTP 服务器的所有配置。服务器的配置包括如何处理请求、监听的端口、超时设置等。
+
+**重要字段：**
+- `Handler`: `http.Handler` 接口的实例，负责处理所有的 HTTP 请求。？？
+- `ReadTimeout` 和 `WriteTimeout`: 控制服务器读写操作的超时时间。
+- `MaxHeaderBytes`: 控制最大的请求头大小。
+
+**用法示例：**
+```go
+server := &http.Server{
+    Handler:      myHandler, // 实现了 http.Handler 接口的实例
+    ReadTimeout:  10 * time.Second,
+    WriteTimeout: 10 * time.Second,
+    IdleTimeout:  120 * time.Second, // 新增空闲连接的超时时间
+}
+```
+
+## 4.3 `hs.Serve`
+
+此方法是 `http.Server` 的一个成员方法，负责将服务器绑定到一个监听器并开始处理请求。这是一个阻塞调用，服务器将持续运行，直到发生错误或被停止。
+
+**函数签名：**
+```go
+func (srv *Server) Serve(l net.Listener) error
+```
+
+**用法示例：**
+```go
+err := server.Serve(listener)
+if err != http.ErrServerClosed {
+    log.Fatalf("Server failed: %v", err)
+}
+```
+
+## 4.4 `server.Shutdown`
+
+`server.Shutdown` 方法用于优雅地关闭服务器。这意味着服务器将停止接受新的请求，但会等待已经建立的请求处理完毕。
+
+**函数签名：**
+```go
+func (srv *Server) Shutdown(ctx context.Context) error
+```
+
+- `ctx`: `context.Context` 实例，可以用于设置超时或取消关闭过程。
+
+**用法示例：**
+```go
+ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+defer cancel()
+
+if err := server.Shutdown(ctx); err != nil {
+    log.Fatalf("Server shutdown failed: %v", err)
+}
+```
+
+## 4.5 结合使用
+
+将上述组件结合起来，可以创建一个健壮的 HTTP 服务器，它能够接受连接、处理请求，并优雅地处理关闭事件。这不仅增强了服务的可用性，还提高了服务的稳定性，能够在维护或升级时减少对客户端的影响。
