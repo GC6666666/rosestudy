@@ -33,7 +33,10 @@ func (s *Server) Start() error {
 	if err != nil {
 		return err
 	}
-
+	/*
+	   这里把gin的Engine作为http server的Handler来使用，Handler是一个接口，也就是gin的Engine实现了ServeHTTP方法，
+	   当有http请求过来的时候都会走到Engine的ServeHTTP方法。
+	*/
 	hs := &http.Server{
 		Handler:      s.engine,
 		ReadTimeout:  s.conf.ReadTimeOut,
@@ -55,6 +58,7 @@ func (s *Server) getServer() *http.Server {
 }
 
 func (s *Server) ShutDown(ctx context.Context) error {
+	// 这里获取server的作用是什么
 	server := s.getServer()
 	if server == nil {
 		return fmt.Errorf("[chttp] server is nil")

@@ -7,3 +7,5 @@ lesson6的笔记更新到config配置文件的相关解读 --20240415 14:07
 今天主要是对common/net/chttp/server.go的Server结构体做了解析，增加了对gin框架的使用的知识点补充，欢迎各位大佬批评指正！内容放在了对应路径下的server.md文件中，其中设计到的一些代码段我都运行了，基本没什么问题。 --20240416
 
 晚上下班又对Start和ShutDown方法做了一些API上的解析 20240416 20:22
+
+今天对路由部分(internal/handler/handler.go user.go)做了讲解 20240428 14:47
