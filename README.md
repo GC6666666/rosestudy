@@ -9,3 +9,5 @@ lesson6的笔记更新到config配置文件的相关解读 --20240415 14:07
 晚上下班又对Start和ShutDown方法做了一些API上的解析 20240416 20:22
 
 今天对路由部分(internal/handler/handler.go user.go)做了讲解 20240428 14:47
+
+第六节课的解析完结撒花！！ 20240419 00:36
