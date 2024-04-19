@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../../GoLand/baize/.idea/baize.iml" filepath="$PROJECT_DIR$/../../../GoLand/baize/.idea/baize.iml" />
       <module fileurl="file://$PROJECT_DIR$/../practice/.idea/practice.iml" filepath="$PROJECT_DIR$/../practice/.idea/practice.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/rose.iml" filepath="$PROJECT_DIR$/.idea/rose.iml" />
     </modules>
