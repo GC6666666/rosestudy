@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"time"
@@ -33,4 +34,17 @@ func NewDB(conf *Config) *DB {
 	return &DB{
 		DB: d,
 	}
+}
+
+func (db *DB) Query(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error) {
+	return db.QueryContext(ctx, query, args)
+}
+
+func (db *DB) QueryRow(ctx context.Context, query string, args ...interface{}) *sql.Row {
+	return db.QueryRowContext(ctx, query, args)
+}
+
+func (db *DB) Exec(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
+	return db.ExecContext(ctx, query, args)
+
 }
