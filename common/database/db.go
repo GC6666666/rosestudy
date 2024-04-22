@@ -37,14 +37,22 @@ func NewDB(conf *Config) *DB {
 }
 
 func (db *DB) Query(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error) {
-	return db.QueryContext(ctx, query, args)
+	return db.QueryContext(ctx, query, args...)
 }
 
 func (db *DB) QueryRow(ctx context.Context, query string, args ...interface{}) *sql.Row {
-	return db.QueryRowContext(ctx, query, args)
+	return db.QueryRowContext(ctx, query, args...)
 }
 
 func (db *DB) Exec(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
-	return db.ExecContext(ctx, query, args)
+	return db.ExecContext(ctx, query, args...)
 
 }
+
+/*
+func (db *DB) Exec(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
+	return db.ExecContext(ctx, query, args)
+}
+最开始这里没有加...，不知道是不是问题的原因所在
+A : 就是这里的原因！！！！下次细心点吧球球了！浪费了一小时 干！
+*/

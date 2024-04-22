@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	getByUserIDSQL  = "SELECT id, user_name, creat_time, update_time FROM user WHERE id = ?"
+	getByUserIDSQL  = "SELECT id, user_name, create_time, update_time FROM user WHERE id = ?"
 	getByUserIDsSQL = "SELECT id, user_name, create_time, update_time FROM user WHERE id IN (%s)"
 	insertUserSQL   = "INSERT INTO user(user_name) VALUES(?)"
 )
@@ -23,8 +23,16 @@ type UserModel struct {
 }
 
 func (db *DB) InsertUser(ctx context.Context, userName string) (int64, error) {
+	/*
+		func (db *DB) Exec(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
+			return db.ExecContext(ctx, query, args)
+
+		}
+	*/
 	result, err := db.db.Exec(ctx, insertUserSQL, userName)
+
 	if err != nil {
+
 		return 0, err
 	}
 	return result.LastInsertId()
